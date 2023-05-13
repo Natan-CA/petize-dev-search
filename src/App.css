@@ -1,38 +1,45 @@
-.App {
-  text-align: center;
-}
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.content {
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.main-title {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 80px;
+  line-height: 109px;
+  letter-spacing: 0.01em;
+  text-align: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.title-sm {
+  font-size: 32px;
+  line-height: normal;
+  text-align: start;
+}
+
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+}
+
+.nav-form {
+  display: flex;
+  align-items: baseline;
+}
+
+.main-logo-primary {
+  color: #0069CA
+}
+
+.main-logo-secondary {
+  color: #8C19D2
 }
