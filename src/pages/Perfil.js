@@ -1,6 +1,6 @@
 import { React, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -8,7 +8,6 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import InputAdornment from "@mui/material/InputAdornment";
 import Search from "@mui/icons-material/Search";
-import { useNavigate } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
@@ -21,15 +20,11 @@ import link from "./../assets/link.png";
 import office from "./../assets/office.png";
 import pin from "./../assets/pin-location.png";
 import twitter from "./../assets/twitter.png";
-import star from "./../assets/star.png";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Link from "@mui/material/Link";
-import moment from "moment";
-import localization from "moment/locale/pt-br";
-moment.locale("pt-br", localization);
+import ItemLista from "./../components/ItemLista";
+import RepoLista from "./../components/RepoLista";
+import { fetchRepos, fetchUser } from "./../services/user";
+
 
 function Perfil() {
     let { user } = useParams();
@@ -43,115 +38,24 @@ function Perfil() {
         navigate(`/`);
     };
 
-    const fetchUser = () => {
-        axios.get(`https://api.github.com/users/${user}`).then((response) => {
-            setUserInfo(response.data);
-        });
-    };
-
-    const fetchRepos = () => {
-        axios
-            .get(
-                `https://api.github.com/search/repositories?q=user:${user}+stars:>=0`
-            )
-            .then((response) => {
-                setRepos(response.data);
-            });
-    };
-
     useEffect(() => {
-        fetchUser();
-        fetchRepos();
+        fetchUser(user).then((response) => setUserInfo(response.data));
+        fetchRepos(user).then((response) => setRepos(response.data));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    function ItemLista({ icon, alt, data, prefix, isLink }) {
-        if (userInfo.length === 0 || data === null || data === "") return null;
-        else {
-            prefix = prefix || "";
-            return (
-                <ListItem disableGutters>
-                    <ListItemIcon sx={{ minWidth: 0, marginRight: 1 }}>
-                        <img src={icon} alt={alt} />
-                    </ListItemIcon>
-                    <ListItemText>
-                        {isLink ? (
-                            <Link
-                                href={
-                                    prefix
-                                        ? `https://twitter.com/${data}`
-                                        : data
-                                }
-                            >
-                                {prefix + data}
-                            </Link>
-                        ) : (
-                            <span>{prefix + data}</span>
-                        )}
-                    </ListItemText>
-                </ListItem>
-            );
-        }
-    }
-
-    function RepoLista({ rep }) {
-        if (rep.length === 0) return null;
-        else {
-            const repositorios = rep.items;
-            return repositorios.map((r, index) => (
-                <Card key={index} sx={{ marginBottom: 2 }}>
-                    <CardContent
-                        sx={{ paddingY: 0, "&:last-child": { pb: 0 } }}
-                    >
-                        <List>
-                            <ListItem disableGutters>
-                                <Link
-                                    href={r.html_url}
-                                    underline="hover"
-                                    color="inherit"
-                                >
-                                    <Typography variant="h6">
-                                        {r.name}
-                                    </Typography>
-                                </Link>
-                            </ListItem>
-                            <ListItem disableGutters>
-                                <Typography variant="body2" color='#4A5568'>
-                                    {r.description}
-                                </Typography>
-                            </ListItem>
-                            <ListItem disableGutters>
-                                <ListItemIcon
-                                    sx={{ minWidth: 0, marginRight: 1 }}
-                                >
-                                    <img src={star} alt="star_icon" />
-                                </ListItemIcon>
-                                <ListItemText>
-                                    <Typography variant="body2" color='#4A5568'>
-                                        {r.stargazers_count} •{" "}
-                                        {moment(r.updated_at).fromNow()}
-                                    </Typography>
-                                </ListItemText>
-                            </ListItem>
-                        </List>
-                    </CardContent>
-                </Card>
-            ));
-        }
-    }
-
     return (
         <Container maxWidth="lg">
-            <Box sx={{ marginTop: 3 }}>
+            <Box sx={{ marginTop: 3 }} justifyContent="center">
                 <Grid container spacing={2}>
                     {/* nav-bar */}
-                    <Grid item xs={3}>
+                    <Grid item md={3} sm={5} xs={12}>
                         <div className="main-title title-sm">
                             <span className="main-logo-primary">Search </span>
                             <span className="main-logo-secondary">d_evs</span>
                         </div>
                     </Grid>
-                    <Grid item xs={9}>
+                    <Grid item md={9} sm={7} xs={12}>
                         <form className="nav-form">
                             <TextField
                                 type="text"
@@ -174,6 +78,7 @@ function Perfil() {
                                     fontFamily: "Inter",
                                     textTransform: "none",
                                     marginLeft: "20px",
+                                    whiteSpace: "nowrap"
                                 }}
                                 type="submit"
                                 variant="contained"
@@ -186,7 +91,7 @@ function Perfil() {
                         </form>
                     </Grid>
                     {/* user card */}
-                    <Grid item xs={3} sx={{ marginTop: 12 }}>
+                    <Grid item md={3} sm={5} xs={12} sx={{ marginTop: 12 }}>
                         <Card>
                             <CardHeader
                                 avatar={
@@ -248,7 +153,7 @@ function Perfil() {
                         </Card>
                     </Grid>
                     {/* repositories card */}
-                    <Grid item xs={9} sx={{ marginTop: 12 }}>
+                    <Grid item md={9} sm={7} xs={12} sx={{ marginTop: 12 }}>
                         <RepoLista rep={repos} />
                     </Grid>
                 </Grid>
