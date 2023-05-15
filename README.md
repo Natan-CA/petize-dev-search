@@ -19,9 +19,9 @@ executar comando `npm run build`
 
 ## Sobre o projeto
 
-Utilizei a biblioteca Material UI pois já trabalhei com ela antes então fico mais â vontade utilizando ela novamente.
+Utilizei a biblioteca Material UI pois já trabalhei com ela antes então fico mais â vontade. E também usei o moment.js para lidar com as datas.
 
-No caso dos ícones utilizei os mesmos apresentados no template do figma
+No caso dos ícones utilizei os mesmos apresentados no template do figma.
 
-A estrutura do projeto é bem simples, ele contém uma pasta para as páginas (Pages) e outra para as imagens (Assets)
+A estrutura do projeto é bem simples, ele contém a pasta das páginas (Pages), a das imagens (Assets). a dos componentes (Components) e a das chamadas a API (Services).
 
